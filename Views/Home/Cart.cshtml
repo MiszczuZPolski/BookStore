@@ -1,0 +1,47 @@
+﻿@model IEnumerable<BookStore.Models.BookModel>
+
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>Cart</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Price</td>
+                <td>
+                    <form asp-action="UpdateQuantity" method="post">
+                        <input type="number" name="quantity" value="@book.AmountInCart" min="1" max="@book.Amount" class="form-control mr-2">
+                        <input type="hidden" name="ID" value="@book.ID">
+                        <button type="submit" class="btn btn-secondary btn-sm">Update</button>
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="RemoveFromCart" method="post">
+                        <input type="hidden" name="ID" value="@book.ID">
+                        <button type="submit" class="btn btn-secondary btn-sm">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>Total: @Model.Sum(b => b.AmountInCart * b.Price)</p>
+
+<a asp-action="List" class="btn btn-secondary">Continue shopping</a>
+<a asp-action="Checkout" class="btn btn-primary">Checkout</a>

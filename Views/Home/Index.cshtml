@@ -1,0 +1,36 @@
+﻿@model IEnumerable<BookModel>
+
+<h1>Spis książek</h1>
+
+<div class="container mt-5">
+    <div class="card-columns">
+        @foreach (var book in Model)
+        {
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="@book.CoverUrl" class="card-img" alt="Book cover">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                            <p class="card-text">@book.Description</p>
+                            <p class="card-text"><small class="text-muted">@book.Author</small></p>
+                            <p class="card-text"><strong>Brand:</strong> @book.Brand</p>
+                            <p class="card-text"><strong>Genre:</strong> @book.Genre</p>
+                            <p class="card-text"><strong>Price:</strong> @book.Price</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                  <form asp-action="AddToCart" method="post">
+                    <label for="quantity">Ilość:</label>
+                    <input type="hidden" name="bookId" value="@book.ID">
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="@book.Amount" class="form-control mr-2">
+                    <button type="submit" class="btn btn-secondary">Dodaj do koszyka</button>
+                  </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
