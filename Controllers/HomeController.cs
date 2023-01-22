@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace BookStore.Controllers
 {
@@ -47,9 +49,27 @@ namespace BookStore.Controllers
             return RedirectToAction("Cart", "Home");
         }
 
+        [HttpPost]
+        public IActionResult UpdateQuantity(int ID, int quantity)
+        {
+            var manager = new DBManager(_context);
+            manager.UpdateBookQuantity(ID, quantity);
+            return RedirectToAction("Cart", "Home");
+        }
+
         [HttpGet]
         public IActionResult Checkout()
         {
+            var manager = new DBManager(_context);
+            var cartItems = manager.GetCartItems();
+
+            foreach (var item in cartItems)
+            {
+                var book = _context.Books.SingleOrDefault(x => x.ID == item.BookID);
+                book.Amount -= item.Quantity;
+                manager.UpdateBook(book);
+                manager.RemoveBookFromCart(item.BookID);
+            }
             return View();
         }
 

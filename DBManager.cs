@@ -45,6 +45,8 @@ namespace BookStore
             if (cartItem == null)
             {
                 _context.Carts.Add(new CartModel { BookID = bookID, Quantity = quantity });
+                book.AmountInCart= quantity;
+                _context.Books.Update(book);
             }
             else
             {
@@ -79,6 +81,18 @@ namespace BookStore
             return this;
         }
 
+        public DBManager UpdateBookQuantity(int bookID, int newQuantity)
+        {
+            var cartItem = _context.Carts.SingleOrDefault(x => x.BookID == bookID);
+            if (cartItem != null)
+            {
+                cartItem.Quantity = newQuantity;
+                _context.Carts.Update(cartItem);
+                _context.SaveChanges();
+            }
+            return this;
+        }
+
         public DBManager UpdateBook(BookModel bookModel)
         {
             var book = _context.Books.Update(bookModel);
@@ -106,11 +120,17 @@ namespace BookStore
                     Author = b.Author,
                     Title = b.Title,
                     Price = b.Price,
-                    AmountInCart = c.Quantity
+                    AmountInCart = c.Quantity,
+                    Amount = b.Amount
                 })
                 .ToList();
 
             return bookModels;
+        }
+
+        public List<CartModel> GetCartItems()
+        {
+            return _context.Carts.ToList();
         }
 
     }

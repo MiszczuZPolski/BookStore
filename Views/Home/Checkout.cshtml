@@ -1,0 +1,14 @@
+﻿@model BookStore.Models.CartModel
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>Podsumowanie transakcji</h1>
+
+<h3>Zakup przeszedł pomyślnie</h3>
+<div>    
+    <form asp-action="View">
+        <a asp-action="Index">Powróć do spisu</a>
+    </form>
+</div>
