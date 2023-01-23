@@ -24,10 +24,10 @@
                 </div>
                 <div class="card-footer">
                   <form asp-action="AddToCart" method="post">
-                    <label for="quantity">Ilość:</label>
+                    <label for="quantity">Quantity:</label>
                     <input type="hidden" name="bookId" value="@book.ID">
                     <input type="number" name="quantity" id="quantity" value="1" min="1" max="@book.Amount" class="form-control mr-2">
-                    <button type="submit" class="btn btn-secondary">Dodaj do koszyka</button>
+                    <button type="submit" class="btn btn-secondary">Add to cart</button>
                   </form>
                 </div>
             </div>
